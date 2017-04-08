@@ -7,6 +7,7 @@ var {User} = require('./models/user.js');
 var bodyParser = require('body-parser');
 var express = require('express');
 var {objectID} = require('mongodb');
+var {authenticate} = require('./middleware/authenticate.js');
 
 // var newTodo = new Todo({
 //     text: 'cook dinner'
@@ -115,6 +116,10 @@ app.post('/users',(req, res) => {
         console.log(e);
         res.status(400).send(e);
     });
+});
+
+app.get('/users/me', authenticate, (req,res) => {
+    res.send(req.user);
 });
 
 app.listen(port, () => {
